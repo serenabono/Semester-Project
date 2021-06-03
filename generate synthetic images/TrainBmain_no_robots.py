@@ -33,6 +33,7 @@ def main():
     img = imread("/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/robocup_thicker.jpeg")
 
     if(frontal==True):
+        folder="/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/seq1/"
         x=-np.pi/2-np.pi/2-np.pi/6+el
         row, col, ch = img.shape
         zoom = 1600
@@ -41,6 +42,7 @@ def main():
         rangea=np.asarray(np.linspace(0, np.pi/2.5, 20))
         rangez=np.asarray(np.linspace(0, np.pi/4, 5))
     else:
+        folder="/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/seq2/"
         x=-np.pi/2-np.pi/6+el
         row,col,ch=img.shape
         zoom=1600
@@ -71,7 +73,7 @@ def main():
                 img_out[:thresh,:,:]=np.zeros(img_out[:thresh,:,:].shape)
                 img_out=np.nan_to_num(img_out)
                 img_out=img_out+np.repeat(np.repeat(np.linspace(1,0,img_out.shape[1]),3),img.shape[0]).reshape(img_out.shape)
-                cv2.imwrite(f"/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/seq1/{i}.png", img_out*255, [cv2.IMWRITE_PNG_COMPRESSION, 0])
+                cv2.imwrite(folder+f"{i}.png", img_out*255, [cv2.IMWRITE_PNG_COMPRESSION, 0])
 
                 df = pd.DataFrame(label).transpose()
 
