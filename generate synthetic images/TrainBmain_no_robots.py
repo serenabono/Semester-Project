@@ -85,12 +85,6 @@ def main():
 
     labeltxt.close()
     return
-#image gray
-#size_x=img_out.shape[0]
-#size_y=img_out.shape[1]
-#img_out=img_out.reshape([size_x*size_y,img_out.shape[2]])
-#img_out[a,:]=[0.5,0.5,0.5]
-#img_out=img_out.reshape([size_x, size_y, 3])
 
 if __name__=="__main__":
     main()
