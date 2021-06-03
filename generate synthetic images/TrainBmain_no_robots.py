@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 def simImage(img,H):
     tform = transform.ProjectiveTransform(H)
     img2 = transform.warp(img, tform.inverse, mode="constant")
-
     return img2
 
 
@@ -34,7 +33,7 @@ def main():
     img = imread("/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/robocup_thicker.jpeg")
 
     if(frontal==True):
-        #frontal: remember to put image frontal
+        x=-np.pi/2-np.pi/2-np.pi/6+el
         row, col, ch = img.shape
         zoom = 1600
         rangex=np.linspace(100,-row/1.2,24)
@@ -42,7 +41,7 @@ def main():
         rangea=np.asarray(np.linspace(0, np.pi/2.5, 20))
         rangez=np.asarray(np.linspace(0, np.pi/4, 5))
     else:
-        #lateral: remember to put image lateral
+        x=-np.pi/2-np.pi/6+el
         row,col,ch=img.shape
         zoom=1600
         rangex=np.linspace(100,-1400,24)
@@ -56,16 +55,16 @@ def main():
             for el in rangea:
 
                 K = np.asarray([[zoom, 0, col / 2], [0, zoom, row / 2.5], [0, 0, 1]], dtype=np.float64)
-                H,label = runSimulate(K, el2, -np.pi / 2, 100-np.pi/8, 0, el1, -np.pi/2-np.pi/2-np.pi/6+el)
+                H,label = runSimulate(K, el2, -np.pi / 2, 100-np.pi/8, 0, el1, x)
 
                 img_out = simImage(img, H)
 
-                # img_out[] = [0.5, 0.5, 0.5]
                 thresh = int(img.shape[0] / 2)
                 # remove reflection
                 img_out[:thresh,:,:]=np.zeros(img[:thresh,:,:].shape)
                 a = np.sum(img_out.reshape([img.shape[0] * img_out.shape[1], img_out.shape[2]]), axis=1) == 0
                 tot_black = np.sum(a)
+                #filter out images with more the 70% of black
                 if (tot_black > 0.7 * img_out.shape[0] * img_out.shape[1]):
                     continue
 
