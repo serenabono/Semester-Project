@@ -20,20 +20,15 @@ def simImage(img,H):
     return img2
 
 def main():
-    #realtxt = open('dataset_test.txt', 'r')
     faketxt = open('predicted.txt', 'r')
 
     for i, fake in enumerate(faketxt.readlines()):
-        #real_split=real.split(" ")
         fake_split=fake.split(" ")
         img = imread("/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/robocup_thicker.jpeg")
-        #img=np.rot90(img)
         row, col, ch = img.shape
         zoom = 1300
         K = np.asarray([[zoom, 0, col / 2], [0, zoom, row / 2.5], [0, 0, 1]], dtype=np.float64)
-        #H_real = runSimulate(K,float(real_split[0]),float(real_split[1]),float(real_split[2]),float(real_split[3]),float(real_split[4]),float(real_split[5]),float(real_split[6]))
         H_fake = runSimulate(K,float(fake_split[0]),float(fake_split[1]),float(fake_split[2]),float(fake_split[3]),float(fake_split[4]),float(fake_split[5]),float(fake_split[6]))
-        #img_out_real = simImage(img, H_real)
         img_out_real=Image.open(f"/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/only-converted/{i}.png")
         img_out_fake = simImage(img, H_fake)
         img_out = np.concatenate((img_out_real.resize((img_out_fake.shape[1],img_out_fake.shape[0]), Image.ANTIALIAS), img_out_fake*255), axis=1)
