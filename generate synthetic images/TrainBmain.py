@@ -85,6 +85,8 @@ def main():
                 tot_black = np.sum(a)
                 if (tot_black > 0.7 * img_out.shape[0] * img_out.shape[1]):
                     continue
+                
+                #remove comment if you want to generate also robots within the image
                 """
                 b_channel, g_channel, r_channel = cv2.split(img_out)
                 alpha_channel = np.ones(b_channel.shape,
@@ -118,11 +120,21 @@ def main():
                         except:
                             pass
                 """
+                #comment for robots
                 img_out[:thresh,:,:]=np.zeros(img_out[:thresh,:,:].shape)
+                
+                #remove comment for robots
                 #img_out[:thresh,:,3]=np.ones(img_out[:thresh,:,3].shape)
+                
                 img_out=np.nan_to_num(img_out)
+               
+                #comment for robots
                 img_out=img_out+np.repeat(np.repeat(np.linspace(1,0,img_out.shape[1]),3),img.shape[0]).reshape(img_out.shape)
                 cv2.imwrite(f"/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/seq1/{i}.png", img_out*255, [cv2.IMWRITE_PNG_COMPRESSION, 0])
+                
+                #remove comment for robots
+                #img_out=img_out*255+np.repeat(np.repeat(np.linspace(1,0,img_out.shape[1]),4),img.shape[0]).reshape(img_out.shape)
+                #cv2.imwrite(f"/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/seq1/{i}.png", img_out, [cv2.IMWRITE_PNG_COMPRESSION, 0])
 
                 df = pd.DataFrame(label).transpose()
 
