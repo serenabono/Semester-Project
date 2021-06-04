@@ -34,7 +34,7 @@ def main():
 
     if(frontal==True):
         folder="/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/seq1/"
-        x=-np.pi/2-np.pi/2-np.pi/6+el
+        x=-np.pi/2-np.pi/2-np.pi/6
         row, col, ch = img.shape
         zoom = 1600
         rangex=np.linspace(100,-row/1.2,24)
@@ -43,7 +43,7 @@ def main():
         rangez=np.asarray(np.linspace(0, np.pi/4, 5))
     else:
         folder="/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/seq2/"
-        x=-np.pi/2-np.pi/6+el
+        x=-np.pi/2-np.pi/6
         row,col,ch=img.shape
         zoom=1600
         rangex=np.linspace(100,-1400,24)
@@ -57,7 +57,7 @@ def main():
             for el in rangea:
 
                 K = np.asarray([[zoom, 0, col / 2], [0, zoom, row / 2.5], [0, 0, 1]], dtype=np.float64)
-                H,label = runSimulate(K, el2, -np.pi / 2, 100-np.pi/8, 0, el1, x)
+                H,label = runSimulate(K, el2, -np.pi / 2, 100-np.pi/8, 0, el1, x+el)
 
                 img_out = simImage(img, H)
 
