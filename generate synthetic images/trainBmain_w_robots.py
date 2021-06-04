@@ -52,7 +52,7 @@ def main():
 
     if(frontal==True):
         folder="/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/seq1/"
-        x= -np.pi/2-np.pi/2-np.pi/6+el
+        x= -np.pi/2-np.pi/2-np.pi/6
         row, col, ch = img.shape
         zoom = 1600
         rangex=np.linspace(100,-row/1.2,24)
@@ -61,7 +61,7 @@ def main():
         rangez=np.asarray(np.linspace(0, np.pi/4, 5))
     else:
         folder="/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/seq2/"
-        x=-np.pi/2-np.pi/6+el
+        x=-np.pi/2-np.pi/6
         row,col,ch=img.shape
         zoom=1600
         rangex=np.linspace(100,-1400,24)
@@ -81,7 +81,7 @@ def main():
                 coord=gen_robots(nrobots=nrobots,robot_dima=robot_dima,robot_dimb=robot_dimb)
                 #dx,thetax,dy,thetay,dz,thetaz
                 K = np.asarray([[zoom, 0, col / 2], [0, zoom, row / 2.5], [0, 0, 1]], dtype=np.float64)
-                H,label = runSimulate(K, el2, -np.pi / 2, 100-np.pi/8, 0, el1, x)
+                H,label = runSimulate(K, el2, -np.pi / 2, 100-np.pi/8, 0, el1, x+el)
 
                 img_out = simImage(img, H)
 
@@ -104,7 +104,7 @@ def main():
                     fimg[int(coord[n,0])-dim_square:int(coord[n,0])+dim_square,int(coord[n,1])-dim_square:int(coord[n,1])+dim_square,:]=np.ones(img[int(coord[n,0])-dim_square:int(coord[n,0])+dim_square,int(coord[n,1])-dim_square:int(coord[n,1])+dim_square,:].shape)*255
                     fimg[int(coord[n,0]+coord[n,2])-dim_square:int(coord[n,0]+coord[n,2])+dim_square,int(coord[n,1])-dim_square:int(coord[n,1])+dim_square,:]=np.ones(fimg[int(coord[n,0]+coord[n,2])-dim_square:int(coord[n,0]+coord[n,2])+dim_square,int(coord[n,1])-dim_square:int(coord[n,1])+dim_square,:].shape)*255
                     K_rob = np.asarray([[zoom, 0, col / 2], [0, zoom, int(row / 2)*1.4], [0, 0, 1]], dtype=np.float64)
-                    H_rob,_ = runSimulate(K_rob, el2, -np.pi / 2, 100, 0, el1, x)
+                    H_rob,_ = runSimulate(K_rob, el2, -np.pi / 2, 100, 0, el1, x+el)
                     img_out0=simImage(fimg-img, H_rob)
                     img_out2=simImage(fimg-img, H)
                     img_out0 = np.nan_to_num(img_out0)
