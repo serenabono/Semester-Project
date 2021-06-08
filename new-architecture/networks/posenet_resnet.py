@@ -131,7 +131,7 @@ class PoseNet_resnet(BaseNet):
         return loss, losses
 
     def ss_loss_(self, batch):
-        im = self.get_inputs_(batch, with_label=False)
+        im = self.get_inputs_(batch, with_label=False)/255
         criterion = nn.MSELoss()
         pred = self.forward(im)
         loss = 0
