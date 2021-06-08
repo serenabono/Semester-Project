@@ -52,5 +52,5 @@ def evaluate_images(xyz,wpqr):
         K = torch.tensor([[zoom, 0, col / 2], [0, zoom, row / 2.5], [0, 0, 1]]).type(torch.Tensor)
         H = runSimulate(K,fake[0],fake[1],fake[2],fake[3],fake[4],fake[5],fake[6])
         image_out=simImage(img,H)
-        images[i,:,:,:]=image_out * 255
+        images[i,:,:,:]=image_out
     return images
