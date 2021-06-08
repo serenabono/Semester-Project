@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from networks.base.basenet import BaseNet
-#from networks.base.googlenet import GoogLeNet
 from networks.base.resnet import resnet34
 from networks.base.evaluate import evaluate_images
+
 class Regression(nn.Module):
     """Pose regression module.
     Args:
@@ -56,7 +56,7 @@ class PoseNet_resnet(BaseNet):
         self.regress1 = Regression('regress1')
         self.regress2 = Regression('regress2')
         self.regress3 = Regression('regress3', with_embedding=with_embedding)
-
+        self.device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
         # Loss params
         self.learn_weighting = config.learn_weighting
         if self.learn_weighting:
@@ -68,7 +68,7 @@ class PoseNet_resnet(BaseNet):
         else:
             # Fixed loss weighting with beta
             self.beta = config.beta
-       
+
         self.to(self.device)
         self.init_weights_(config.weights_dict)
         self.set_optimizer_(config)
@@ -112,14 +112,34 @@ class PoseNet_resnet(BaseNet):
             self.load_state_dict(weights_dict, strict=False)
 
     def loss_(self, batch):
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         im, xyz_, wpqr_ = self.get_inputs_(batch, with_label=True)
         criterion = nn.MSELoss()
         pred = self.forward(im)
+        loss = 0
+        losses = []
+        loss_weighting = [0.3, 0.3, 1.0]
+        if self.learn_weighting:
+            loss_func = lambda loss_xyz, loss_wpqr: self.learned_weighting_loss(loss_xyz, loss_wpqr, self.sx, self.sq)
+        else:
+            loss_func = lambda loss_xyz, loss_wpqr: self.fixed_weighting_loss(loss_xyz, loss_wpqr*3, beta=self.beta)
+        for l, w in enumerate(loss_weighting):
+            xyz, wpqr = pred[l]
+            loss_xyz = criterion(xyz, xyz_)
+            loss_wpqr = criterion(wpqr, wpqr_)
+            losses.append((loss_xyz, loss_wpqr))  # Remove if not necessary
+            loss += w * loss_func(loss_xyz, loss_wpqr)
+        return loss, losses
+
+    def ss_loss_(self, batch):
+        im = self.get_inputs_(batch, with_label=False)
+        criterion = nn.MSELoss()
+        pred = self.forward(im)
+        loss = 0
+        losses = []
         loss_weighting = [0.3, 0.3, 1.0]
         for l, w in enumerate(loss_weighting):
             xyz, wpqr = pred[l]
-            pred_images=evaluate_images(xyz, wpqr)
-            real_images=im
-            loss= criterion(pred_images.to(device),real_images.to(device))
-        return loss
+            fake=evaluate_images(xyz, wpqr)
+            loss+=criterion(fake.to(self.device),im.to(self.device))
+            losses.append(loss)
+        return loss, losses

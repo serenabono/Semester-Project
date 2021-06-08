@@ -1,0 +1,1004 @@
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/Robocup
+dataset:
+device:cuda:0
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+optimizer_dict:2
+pose_txt:dataset_train.txt
+seed:1
+start_epoch:20
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:174
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt/checkpoint_20_14503.92m.pth
+----------------------------------------
+
+Epoch 21, loss:3381.960693359375
+Epoch 22, loss:3124.9052734375
+Epoch 23, loss:3484.426513671875
+Epoch 24, loss:3360.90283203125
+Epoch 25, loss:3542.022705078125
+Epoch 26, loss:3980.5029296875
+Epoch 27, loss:3702.666259765625
+Epoch 28, loss:3605.517578125
+Epoch 29, loss:3587.89404296875
+Epoch 30, loss:4070.919677734375
+Accuracy: (14564.27m: 0.00%) 
+Save checkpoint: checkpoint_30_14564.27m.pth
+Epoch 31, loss:3166.876953125
+Epoch 32, loss:3728.98291015625
+Epoch 33, loss:3401.22900390625
+Epoch 34, loss:3673.60009765625
+Epoch 35, loss:3306.470947265625
+Epoch 36, loss:3364.827392578125
+Epoch 37, loss:3573.38427734375
+Epoch 38, loss:3581.242431640625
+Epoch 39, loss:4369.8134765625
+Epoch 40, loss:3330.327392578125
+Accuracy: (14503.92m: 0.00%) 
+Save checkpoint: checkpoint_40_14503.92m.pth
+Epoch 41, loss:3810.58349609375
+Epoch 42, loss:3837.369384765625
+Epoch 43, loss:3350.61083984375
+Epoch 44, loss:3140.75927734375
+Epoch 45, loss:3607.885498046875
+Epoch 46, loss:3678.90966796875
+Epoch 47, loss:3577.334716796875
+Epoch 48, loss:3604.640869140625
+Epoch 49, loss:3502.843505859375
+Epoch 50, loss:3465.367919921875
+Accuracy: (14545.78m: 0.00%) 
+Save checkpoint: checkpoint_50_14545.78m.pth
+Epoch 51, loss:3514.4501953125
+Epoch 52, loss:3021.74365234375
+Epoch 53, loss:3644.94580078125
+Epoch 54, loss:3283.794921875
+Epoch 55, loss:2977.37841796875
+Epoch 56, loss:3094.955322265625
+Epoch 57, loss:3226.640380859375
+Epoch 58, loss:3206.549560546875
+Epoch 59, loss:2620.561279296875
+Epoch 60, loss:2893.0
+Accuracy: (14523.18m: 0.00%) 
+Save checkpoint: checkpoint_60_14523.18m.pth
+Epoch 61, loss:3821.068115234375
+Epoch 62, loss:3167.4755859375
+Epoch 63, loss:2316.560302734375
+Epoch 64, loss:3533.30419921875
+Epoch 65, loss:3609.540283203125
+Epoch 66, loss:3932.567626953125
+Epoch 67, loss:3358.835205078125
+Epoch 68, loss:2925.954345703125
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/Robocup
+dataset:
+device:cuda:0
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/Robocup
+dataset:
+device:cuda:0
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cuda:0
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cuda:0
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cuda:0
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cuda:0
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cuda:0
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cuda:0
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cuda:0
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cuda:0
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cuda:0
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cuda:0
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cpu
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cpu
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cpu
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cpu
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cpu
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cpu
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/
+dataset:Robocup
+device:cpu
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+self_supervised_txt:dataset_train-real.txt
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+Epoch 1, loss:(tensor(351.8700, grad_fn=<AddBackward0>), [(tensor(77.2859, grad_fn=<MseLossBackward>), tensor(0.4809, grad_fn=<MseLossBackward>)), (tensor(81.4323, grad_fn=<MseLossBackward>), tensor(0.5139, grad_fn=<MseLossBackward>)), (tensor(85.7191, grad_fn=<MseLossBackward>), tensor(0.4300, grad_fn=<MseLossBackward>))], tensor(43257.1680, grad_fn=<AddBackward0>), [tensor(43257.1680, grad_fn=<AddBackward0>), tensor(43257.1680, grad_fn=<AddBackward0>), tensor(43257.1680, grad_fn=<AddBackward0>)])
+Epoch 2, loss:(tensor(186.4403, grad_fn=<AddBackward0>), [(tensor(65.7780, grad_fn=<MseLossBackward>), tensor(0.0075, grad_fn=<MseLossBackward>)), (tensor(52.3496, grad_fn=<MseLossBackward>), tensor(0.0085, grad_fn=<MseLossBackward>)), (tensor(148.0656, grad_fn=<MseLossBackward>), tensor(0.0050, grad_fn=<MseLossBackward>))], tensor(43020.0977, grad_fn=<AddBackward0>), [tensor(43020.0977, grad_fn=<AddBackward0>), tensor(43020.0977, grad_fn=<AddBackward0>), tensor(43020.0977, grad_fn=<AddBackward0>)])
+Epoch 3, loss:(tensor(339.0977, grad_fn=<AddBackward0>), [(tensor(425.5418, grad_fn=<MseLossBackward>), tensor(0.0065, grad_fn=<MseLossBackward>)), (tensor(18.0379, grad_fn=<MseLossBackward>), tensor(0.0056, grad_fn=<MseLossBackward>)), (tensor(203.6716, grad_fn=<MseLossBackward>), tensor(0.0042, grad_fn=<MseLossBackward>))], tensor(43865.1172, grad_fn=<AddBackward0>), [tensor(43865.1172, grad_fn=<AddBackward0>), tensor(43865.1172, grad_fn=<AddBackward0>), tensor(43865.1172, grad_fn=<AddBackward0>)])
+Epoch 4, loss:(tensor(126.0455, grad_fn=<AddBackward0>), [(tensor(167.5407, grad_fn=<MseLossBackward>), tensor(0.0064, grad_fn=<MseLossBackward>)), (tensor(107.8203, grad_fn=<MseLossBackward>), tensor(0.0070, grad_fn=<MseLossBackward>)), (tensor(40.8590, grad_fn=<MseLossBackward>), tensor(0.0046, grad_fn=<MseLossBackward>))], tensor(43465.4141, grad_fn=<AddBackward0>), [tensor(43465.4141, grad_fn=<AddBackward0>), tensor(43465.4141, grad_fn=<AddBackward0>), tensor(43465.4141, grad_fn=<AddBackward0>)])
+Epoch 5, loss:(tensor(337.7047, grad_fn=<AddBackward0>), [(tensor(405.3800, grad_fn=<MseLossBackward>), tensor(0.0043, grad_fn=<MseLossBackward>)), (tensor(22.2637, grad_fn=<MseLossBackward>), tensor(0.0043, grad_fn=<MseLossBackward>)), (tensor(207.2862, grad_fn=<MseLossBackward>), tensor(0.0045, grad_fn=<MseLossBackward>))], tensor(nan, grad_fn=<AddBackward0>), [tensor(nan, grad_fn=<AddBackward0>), tensor(nan, grad_fn=<AddBackward0>), tensor(nan, grad_fn=<AddBackward0>)])
+Epoch 6, loss:(tensor(69.6194, grad_fn=<AddBackward0>), [(tensor(113.0090, grad_fn=<MseLossBackward>), tensor(0.0050, grad_fn=<MseLossBackward>)), (tensor(19.1350, grad_fn=<MseLossBackward>), tensor(0.0062, grad_fn=<MseLossBackward>)), (tensor(27.7071, grad_fn=<MseLossBackward>), tensor(0.0042, grad_fn=<MseLossBackward>))], tensor(nan, grad_fn=<AddBackward0>), [tensor(nan, grad_fn=<AddBackward0>), tensor(nan, grad_fn=<AddBackward0>), tensor(nan, grad_fn=<AddBackward0>)])
+Epoch 7, loss:(tensor(71.5197, grad_fn=<AddBackward0>), [(tensor(109.6505, grad_fn=<MseLossBackward>), tensor(0.0049, grad_fn=<MseLossBackward>)), (tensor(23.5450, grad_fn=<MseLossBackward>), tensor(0.0053, grad_fn=<MseLossBackward>)), (tensor(29.5699, grad_fn=<MseLossBackward>), tensor(0.0036, grad_fn=<MseLossBackward>))], tensor(42406.2344, grad_fn=<AddBackward0>), [tensor(42406.2344, grad_fn=<AddBackward0>), tensor(42406.2344, grad_fn=<AddBackward0>), tensor(42406.2344, grad_fn=<AddBackward0>)])
+Epoch 8, loss:(tensor(61.4792, grad_fn=<AddBackward0>), [(tensor(74.4325, grad_fn=<MseLossBackward>), tensor(0.0049, grad_fn=<MseLossBackward>)), (tensor(12.6107, grad_fn=<MseLossBackward>), tensor(0.0039, grad_fn=<MseLossBackward>)), (tensor(33.4221, grad_fn=<MseLossBackward>), tensor(0.0038, grad_fn=<MseLossBackward>))], tensor(42481.4297, grad_fn=<AddBackward0>), [tensor(42481.4297, grad_fn=<AddBackward0>), tensor(42481.4297, grad_fn=<AddBackward0>), tensor(42481.4297, grad_fn=<AddBackward0>)])

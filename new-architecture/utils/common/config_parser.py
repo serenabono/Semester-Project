@@ -34,7 +34,9 @@ class AbsPoseConfig:
         data_group.add_argument('--data_root', '-root', metavar='%s', type=str, default='data',
                                          help='the root directory containing target datasets(default: %(default)s)' )
         data_group.add_argument('--dataset', '-ds', metavar='%s', type=str, required=True, 
-                                         help='the target dataset under data root' )        
+                                         help='the target dataset under data root' )
+        data_group.add_argument('--self_supervised_txt', metavar='%s', type=str, required=True,
+                                help='the target dataset under data root fro self supervised data' )
         data_group.add_argument('--pose_txt',  metavar='%s', default='dataset_train.txt', 
                                          help='the file to load pose labels(default: %(default)s)')
         data_group.add_argument('--val_pose_txt', metavar='%s', type=str, default='dataset_test.txt', 

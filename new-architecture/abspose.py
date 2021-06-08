@@ -1,6 +1,6 @@
 import os
 import time
-from networks.base.evaluate import evaluate_images
+import pandas as pd
 import torch.utils.data as data
 from utils.common.config_parser import AbsPoseConfig
 from utils.common.setup import *
@@ -85,7 +85,7 @@ def setup_config(config):
     optim_tag = '{}_wd{}'.format(optim_tag, config.weight_decay)
     config.optim_tag = optim_tag
 
-def train(net, config, log, train_loader, val_loader=None):
+def train(net, config, log, train_loader, ss_data_loader, val_loader=None):
 
     optim_search = True
     # Setup visualizer
@@ -98,7 +98,7 @@ def train(net, config, log, train_loader, val_loader=None):
     print('Start training from {config.start_epoch} to {config.epochs}.'.format(config=config))
     for epoch in range(config.start_epoch, config.epochs):
         net.train() # Switch to training mode
-        loss = net.train_epoch(train_loader, epoch)
+        loss = net.train_epoch(train_loader,ss_data_loader, epoch)
         lprint('Epoch {}, loss:{}'.format(epoch+1, loss), log)
         # Update homo variable meters
         if config.learn_weighting and homo_meters is not None:
@@ -114,6 +114,7 @@ def train(net, config, log, train_loader, val_loader=None):
         tloss_meter.update(X=epoch+1, Y=loss)
         if config.validate and (epoch+1) % config.validate == 0 and epoch > 0 :
             # Evaluate on validation set
+            #test(net, config, log, data_loader, err_thres=(2, 5)):
             abs_err = test(net, config, log, val_loader)
             ckpt ={'last_epoch': epoch,
                    'network': config.network,
@@ -121,7 +122,7 @@ def train(net, config, log, train_loader, val_loader=None):
                    'optimizer' : net.optimizer.state_dict(),
                    'abs_err' : abs_err,
                    }
-            ckpt_name = 'checkpoint_{epoch}_{abs_err:.2f}m.pth'.format(epoch=(epoch+1), abs_err=abs_err)
+            ckpt_name = 'checkpoint_{epoch}_{abs_err:.2f}m.pth'.format(epoch=(epoch+1), abs_err=abs_err[0])
             torch.save(ckpt, os.path.join(config.ckpt_dir, ckpt_name))
             lprint('Save checkpoint: {}'.format(ckpt_name), log)
 
@@ -134,31 +135,39 @@ def train(net, config, log, train_loader, val_loader=None):
 import torch.nn as nn
 
 def test(net, config, log, data_loader, err_thres=(2, 5)):
-    """
     realtxt=open("/itet-stor/sebono/net_scratch/visloc-apr/real.txt", "w")
     predictedtxt=open("/itet-stor/sebono/net_scratch/visloc-apr/predicted.txt", "w")
-    """
 
     print('Evaluate on dataset:{}'.format(data_loader.dataset.dataset))
     net.eval()
-    err=0
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    criterion = nn.MSELoss()
+    pos_err = []
+    ori_err = []
     with torch.no_grad():
         for i,batch in enumerate(data_loader):
             xyz, wpqr = net.predict_(batch)
-            im, xyz_,wpqr_=net.get_inputs_(batch, with_label=True)
-            real=im
-            fake=evaluate_images(torch.tensor(xyz),torch.tensor(wpqr))
-            err+= criterion(real.to(device),fake.to(device))
-            len=i
-    err=err/len
+            xyz_ = batch['xyz'].data.numpy()
+            wpqr_ = batch['wpqr'].data.numpy()
+
+            #save predicted
+            df_predicted=pd.DataFrame(np.concatenate((xyz.transpose(),wpqr.transpose())).transpose())
+            predictedtxt.write(df_predicted.to_string(header=False, index=False))
+
+            #save real
+            df_real=pd.DataFrame(np.concatenate((xyz_.transpose(),wpqr_.transpose())).transpose())
+            realtxt.write(df_real.to_string(header=False, index=False))
+            t_err = np.linalg.norm(xyz - xyz_, axis=1)
+            q_err = cal_quat_angle_error(wpqr, wpqr_)
+            pos_err += list(t_err)
+            ori_err += list(q_err)
+    err = (np.median(pos_err), np.median(ori_err))
     passed = 0
-    lprint('Accuracy: ({err:.2f}m: {rate:.2f}%) '.format(err=err, err_thres=err_thres, rate=100.0 * passed / i), log)
-    """
+    for i, perr in enumerate(pos_err):
+        if perr < err_thres[0] and ori_err[i] < err_thres[1]:
+            passed += 1
+    lprint('Accuracy: ({err[0]:.2f}m, {err[1]:.2f}deg) Pass({err_thres[0]}m, {err_thres[1]}deg): {rate:.2f}% '.format(err=err, err_thres=err_thres, rate=100.0 * passed / i), log)
+
     realtxt.close()
     predictedtxt.close()
-    """
     return err
 
 def main():
@@ -175,6 +184,10 @@ def main():
     data_loader = data.DataLoader(data_src, batch_size=config.batch_size, shuffle=config.training, num_workers=config.num_workers)
     lprint('Dataset total samples: {}'.format(len(data_src)))
 
+    ss_data_src = AbsPoseDataset(config.dataset, config.data_root, config.self_supervised_txt, config.ops)
+    ss_data_loader = data.DataLoader(ss_data_src, batch_size=config.batch_size, shuffle=config.training, num_workers=config.num_workers)
+    lprint('Dataset total samples: {}'.format(len(ss_data_src)))
+
     if config.validate:
         val_data_src = AbsPoseDataset(config.dataset, config.data_root, config.val_pose_txt, config.val_ops)
         val_loader = data.DataLoader(val_data_src, batch_size=config.batch_size, shuffle=False, num_workers=config.num_workers)
@@ -187,7 +200,7 @@ def main():
     lprint('Model params: {} Optimizer params: {}'.format(len(net.state_dict()), len(net.optimizer.param_groups[0]['params'])))
 
     if config.training:
-        train(net, config, log, data_loader, val_loader)
+        train(net, config, log, data_loader, ss_data_loader,val_loader)
     else:
         test(net, config, log, data_loader)
     log.close()

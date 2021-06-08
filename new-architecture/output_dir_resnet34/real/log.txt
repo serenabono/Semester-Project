@@ -1,0 +1,91 @@
+------------ Configuration -------------
+batch_size:75
+beta:100
+ckpt_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/real/ckpt
+data_class:<class 'utils.datasets.abspose.AbsPoseDataset'>
+data_root:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/data/Robocup
+dataset:
+device:cuda:0
+epochs:1000
+epsilon:1.0
+homo_init:[3.0, 0.0]
+image_mean:None
+learn_weighting:False
+log:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/real/log.txt
+lr_decay:None
+lr_init:0.005
+network:PoseNet_resnet
+num_workers:0
+odir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/output_dir_resnet34/real
+ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    RandomCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+optim:Adam
+optim_tag:Adam_eps1.0_0.005_wd0.0001
+pose_txt:dataset_train.txt
+seed:1
+start_epoch:0
+training:True
+val_ops:Compose(
+    Resize(size=256, interpolation=PIL.Image.BICUBIC)
+    CenterCropNumpy(size=224)
+    ToTensorUnscaled()
+)
+val_pose_txt:dataset_test.txt
+validate:10
+visenv:None
+vishost:localhost
+visport:9333
+viswin:None
+weight_decay:0.0001
+weights_dict:114
+weights_dir:/itet-stor/sebono/net_scratch/visloc-apr-new-architecture/weights/googlenet_places.extract.pth
+----------------------------------------
+
+Epoch 1, loss:10950.2978515625
+Epoch 2, loss:11838.400390625
+Epoch 3, loss:12992.08203125
+Epoch 4, loss:12153.8974609375
+Epoch 5, loss:13474.6396484375
+Epoch 6, loss:11956.7001953125
+Epoch 7, loss:11860.5947265625
+Epoch 8, loss:11997.69921875
+Epoch 9, loss:12365.7607421875
+Epoch 10, loss:10954.8349609375
+Accuracy: (17199.00m: 0.00%) 
+Save checkpoint: checkpoint_10_17199.00m.pth
+Epoch 11, loss:11977.197265625
+Epoch 12, loss:11687.068359375
+Epoch 13, loss:12145.607421875
+Epoch 14, loss:11879.6767578125
+Epoch 15, loss:12627.025390625
+Epoch 16, loss:12553.6650390625
+Epoch 17, loss:11490.33984375
+Epoch 18, loss:12817.5224609375
+Epoch 19, loss:11864.7578125
+Epoch 20, loss:12688.7880859375
+Accuracy: (17284.00m: 0.00%) 
+Save checkpoint: checkpoint_20_17284.00m.pth
+Epoch 21, loss:11042.21484375
+Epoch 22, loss:11607.3876953125
+Epoch 23, loss:13203.5
+Epoch 24, loss:10809.8974609375
+Epoch 25, loss:14216.046875
+Epoch 26, loss:11818.8583984375
+Epoch 27, loss:12632.470703125
+Epoch 28, loss:12361.7978515625
+Epoch 29, loss:13859.5966796875
+Epoch 30, loss:12897.3759765625
+Accuracy: (17329.70m: 0.00%) 
+Save checkpoint: checkpoint_30_17329.70m.pth
+Epoch 31, loss:12283.982421875
+Epoch 32, loss:11594.6533203125
+Epoch 33, loss:12197.4873046875
+Epoch 34, loss:11189.232421875
+Epoch 35, loss:13158.6923828125
+Epoch 36, loss:12173.162109375
+Epoch 37, loss:11256.0498046875
+Epoch 38, loss:11120.2763671875
+Epoch 39, loss:14019.23828125
