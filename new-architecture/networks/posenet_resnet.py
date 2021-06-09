@@ -175,6 +175,6 @@ class PoseNet_resnet(BaseNet):
         for l, w in enumerate(loss_weighting):
             xyz, wpqr = pred[l]
             fake=evaluate_images(xyz, wpqr)
-            loss += criterion(fake, Variable(im,requires_grad=True)) * 10 * 0.5
+            loss += criterion(fake.to(self.device), Variable(im,requires_grad=True)) * 10 * 0.5
             losses.append(loss)
         return loss, losses
