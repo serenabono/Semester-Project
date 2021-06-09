@@ -83,9 +83,10 @@ class BaseNet(nn.Module):
     def train_epoch(self, data_loader,ss_data_loader, epoch):
         if self.lr_scheduler:
             self.lr_scheduler.step()
+
         for i, batch in enumerate(data_loader):
             loss, losses = self.optim_step_(batch, ss=False)
-        if(epoch%10==0):
+        if(epoch%5==0):
             for i, batch in enumerate(ss_data_loader):
                 loss_ss, losses_ss = self.optim_step_(batch, ss=True)
             return loss, losses, loss_ss,losses_ss

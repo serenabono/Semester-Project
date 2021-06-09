@@ -45,7 +45,7 @@ class AbsPoseDataset(data.Dataset):
         poses = []
         ims = []
         f = open(fpath)
-        for line in f.readlines()[3::]:
+        for line in f.readlines():
             cur = line.strip().split(' ')
             xyz = np.array([float(v) for v in cur[1:4]], dtype=np.float32)
             wpqr = np.array([float(v) for v in cur[4:8]], dtype=np.float32)

@@ -29,10 +29,6 @@ def runSimulate(K,dx,dy,dz,q1,q2,q3,q4):
 
 
 def evaluate_images(xyz,wpqr):
-    def show(img):
-        npimg = img.detach().numpy().reshape([3,224,224])
-        plt.imshow(np.transpose(npimg, (1, 2, 0)), interpolation='nearest')
-        plt.show()
     coordinates=torch.cat((xyz,wpqr), dim=1)
     images=torch.zeros([len(coordinates),3,224,224])
     im_path = '/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/robocup_thicker.jpeg'
@@ -49,8 +45,15 @@ def evaluate_images(xyz,wpqr):
 
     for i, fake in enumerate(coordinates):
         zoom = 1600
-        K = torch.tensor([[zoom, 0, col / 2], [0, zoom, row / 2.5], [0, 0, 1]]).type(torch.Tensor)
+        K = torch.tensor([[zoom, 0, col / 2], [0, zoom, row / 2.5], [0, 0, 1]],requires_grad=True).type(torch.Tensor)
         H = runSimulate(K,fake[0],fake[1],fake[2],fake[3],fake[4],fake[5],fake[6])
         image_out=simImage(img,H)
-        images[i,:,:,:]=image_out
+        transform = transforms.Compose(
+            [transforms.ToPILImage(),
+             transforms.RandomHorizontalFlip(),
+             transforms.Resize((224,224)),
+             transforms.RandomCrop((224,224)),
+             transforms.ToTensor(),
+             transforms.Normalize(mean=[0.5,0.5,0.5], std=[0.5,0.5,0.5])])
+        images[i,:,:,:]=transform(image_out[0])
     return images

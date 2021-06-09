@@ -4,6 +4,13 @@ import torch.nn.functional as F
 from networks.base.basenet import BaseNet
 from networks.base.resnet import resnet34
 from networks.base.evaluate import evaluate_images
+import kornia as K
+import matplotlib.pyplot as plt
+import numpy as np
+from torchgeometry.losses import ssim
+from torchvision import transforms, datasets
+from torch.autograd import Variable
+
 
 class Regression(nn.Module):
     """Pose regression module.
@@ -131,15 +138,43 @@ class PoseNet_resnet(BaseNet):
         return loss, losses
 
     def ss_loss_(self, batch):
-        im = self.get_inputs_(batch, with_label=False)/255
-        criterion = nn.MSELoss()
+        def show(img):
+            npimg = img.detach().numpy().reshape([3,224,224])
+            plt.imshow(np.transpose(npimg, (1, 2, 0)), interpolation='nearest')
+            plt.show()
+
+        class MyDataset():
+            def __init__(self, data):
+                super(MyDataset, self).__init__()
+
+                self.data = data
+
+                # define your transform pipline
+                self.transform = transforms.Compose(
+                    [transforms.ToPILImage(),
+                     transforms.RandomHorizontalFlip(),
+                     transforms.Resize((224,224)),
+                     transforms.RandomCrop((224,224)),
+                     transforms.ToTensor(),
+                     transforms.Normalize(mean=[0.5,0.5,0.5], std=[0.5,0.5,0.5])])
+
+            def __getitem__(self, index):
+                x = self.data[index]
+                return self.transform(x)
+
+        im = self.get_inputs_(batch, with_label=False)
+        im=MyDataset(im)
+
+        #im=K.filters.sobel(im,normalized=True,eps= 1e-06)
+        im = im.data
         pred = self.forward(im)
+        criterion=nn.L1Loss()
         loss = 0
         losses = []
         loss_weighting = [0.3, 0.3, 1.0]
         for l, w in enumerate(loss_weighting):
             xyz, wpqr = pred[l]
             fake=evaluate_images(xyz, wpqr)
-            loss+=criterion(fake.to(self.device),im.to(self.device))
+            loss += criterion(fake, Variable(im,requires_grad=True)) * 10 * 0.5
             losses.append(loss)
         return loss, losses

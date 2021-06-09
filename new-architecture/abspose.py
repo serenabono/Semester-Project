@@ -10,6 +10,7 @@ from utils.common.visdom_templates import PoseNetVisTmp, OptimSearchVisTmp
 import networks
 
 def setup_config(config):
+    device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print('Setup configurations...')
     # Seeding
     make_deterministic(config.seed)
@@ -59,7 +60,7 @@ def setup_config(config):
         config.weights_dict = torch.load(config.weights_dir)
     if config.resume:
         config.weights_dir = config.resume[0]
-        checkpoint = torch.load(config.weights_dir)
+        checkpoint = torch.load(config.weights_dir,map_location=device)
         assert config.network == checkpoint['network']
         config.start_epoch = checkpoint['last_epoch'] + 1
         config.weights_dict = checkpoint['state_dict']
@@ -135,8 +136,8 @@ def train(net, config, log, train_loader, ss_data_loader, val_loader=None):
 import torch.nn as nn
 
 def test(net, config, log, data_loader, err_thres=(2, 5)):
-    realtxt=open("/itet-stor/sebono/net_scratch/visloc-apr/real.txt", "w")
-    predictedtxt=open("/itet-stor/sebono/net_scratch/visloc-apr/predicted.txt", "w")
+    #realtxt=open("/itet-stor/sebono/net_scratch/visloc-apr/real.txt", "w")
+    #predictedtxt=open("/predicted-new-net-MSE_loss.txt", "r")
 
     print('Evaluate on dataset:{}'.format(data_loader.dataset.dataset))
     net.eval()
@@ -148,26 +149,29 @@ def test(net, config, log, data_loader, err_thres=(2, 5)):
             xyz_ = batch['xyz'].data.numpy()
             wpqr_ = batch['wpqr'].data.numpy()
 
+            """
             #save predicted
             df_predicted=pd.DataFrame(np.concatenate((xyz.transpose(),wpqr.transpose())).transpose())
             predictedtxt.write(df_predicted.to_string(header=False, index=False))
 
             #save real
-            df_real=pd.DataFrame(np.concatenate((xyz_.transpose(),wpqr_.transpose())).transpose())
-            realtxt.write(df_real.to_string(header=False, index=False))
+            #df_real=pd.DataFrame(np.concatenate((xyz_.transpose(),wpqr_.transpose())).transpose())
+            #realtxt.write(df_real.to_string(header=False, index=False))
+            """
             t_err = np.linalg.norm(xyz - xyz_, axis=1)
             q_err = cal_quat_angle_error(wpqr, wpqr_)
             pos_err += list(t_err)
             ori_err += list(q_err)
     err = (np.median(pos_err), np.median(ori_err))
     passed = 0
+
     for i, perr in enumerate(pos_err):
         if perr < err_thres[0] and ori_err[i] < err_thres[1]:
             passed += 1
     lprint('Accuracy: ({err[0]:.2f}m, {err[1]:.2f}deg) Pass({err_thres[0]}m, {err_thres[1]}deg): {rate:.2f}% '.format(err=err, err_thres=err_thres, rate=100.0 * passed / i), log)
 
-    realtxt.close()
-    predictedtxt.close()
+    #realtxt.close()
+    #predictedtxt.close()
     return err
 
 def main():
@@ -202,7 +206,7 @@ def main():
     if config.training:
         train(net, config, log, data_loader, ss_data_loader,val_loader)
     else:
-        test(net, config, log, data_loader)
+        test(net, config, log, ss_data_loader)
     log.close()
 
 if __name__ == '__main__':
