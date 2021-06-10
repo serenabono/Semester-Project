@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 from collections import OrderedDict
+import itertools
+
 
 class BaseNet(nn.Module):
     def __init__(self, config):
@@ -58,9 +60,22 @@ class BaseNet(nn.Module):
         elif config.optim == 'SGD':
             self.optimizer = torch.optim.SGD(self.parameters(), lr=config.lr_init, momentum=config.momentum, weight_decay=config.weight_decay, nesterov=False)
 
-        # Initialize optimizer from a state if available
+        self.g_optimizer = torch.optim.Adam(self.parameters(), lr=.0002, betas=(0.5, 0.999))
+
+    # Initialize optimizer from a state if available
         if config.optimizer_dict and config.training:
             self.optimizer.load_state_dict(config.optimizer_dict)
+
+        class LambdaLR():
+            def __init__(self, epochs, offset, decay_epoch):
+                self.epochs = epochs
+                self.offset = offset
+                self.decay_epoch = decay_epoch
+
+            def step(self, epoch):
+                return 1.0 - max(0, epoch + self.offset - self.decay_epoch) / (self.epochs - self.decay_epoch)
+
+        self.g_lr_scheduler = torch.optim.lr_scheduler.LambdaLR(self.g_optimizer, lr_lambda=LambdaLR(1000, 0, 100).step)
 
         if config.lr_decay:
             self.lr_scheduler = torch.optim.lr_scheduler.StepLR(self.optimizer, step_size=config.lr_decay_step, gamma=config.lr_decay_factor, last_epoch=config.start_epoch-1)
@@ -70,25 +85,27 @@ class BaseNet(nn.Module):
     def predict_(self, batch):
         return self.forward(*self.get_inputs_(batch, with_label=False))
 
-    def optim_step_(self, batch, ss=False):
+    def optim_step_g_(self, batch):
+        self.g_optimizer.zero_grad()
+        loss, losses = self.ss_loss_(batch)
+        loss.backward()
+        self.g_optimizer.step()
+        self.g_lr_scheduler.step()
+        return loss, losses
+
+    def optim_step_(self, batch):
         self.optimizer.zero_grad()
-        if(ss==False):
-            loss, losses = self.loss_(batch)
-        else:
-            loss, losses = self.ss_loss_(batch)
+        loss, losses = self.ss_loss_(batch)
         loss.backward()
         self.optimizer.step()
         return loss, losses
 
     def train_epoch(self, data_loader,ss_data_loader, epoch):
-        if self.lr_scheduler:
-            self.lr_scheduler.step()
-
         for i, batch in enumerate(data_loader):
-            loss, losses = self.optim_step_(batch, ss=False)
+            loss, losses = self.optim_step_(batch)
         if(epoch%5==0):
             for i, batch in enumerate(ss_data_loader):
-                loss_ss, losses_ss = self.optim_step_(batch, ss=True)
+                loss_ss, losses_ss = self.optim_step_g_(batch)
             return loss, losses, loss_ss,losses_ss
         return loss, losses
 

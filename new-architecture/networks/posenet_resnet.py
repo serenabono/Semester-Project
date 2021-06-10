@@ -163,18 +163,17 @@ class PoseNet_resnet(BaseNet):
                 return self.transform(x)
 
         im = self.get_inputs_(batch, with_label=False)
-        im=MyDataset(im)
-
-        #im=K.filters.sobel(im,normalized=True,eps= 1e-06)
-        im = im.data
-        pred = self.forward(im)
+        im_no_filter=MyDataset(im)
+        #im=K.filters.sobel(im_no_filter.data,normalized=True,eps= 1e-06)/255
+        pred = self.forward(im_no_filter.data)
         criterion=nn.L1Loss()
         loss = 0
         losses = []
         loss_weighting = [0.3, 0.3, 1.0]
         for l, w in enumerate(loss_weighting):
             xyz, wpqr = pred[l]
-            fake=evaluate_images(xyz, wpqr)
-            loss += criterion(fake.to(self.device), Variable(im,requires_grad=True)) * 10 * 0.5
+            fake_no_filter=evaluate_images(xyz, wpqr)
+            #fake=K.filters.sobel(fake_no_filter,normalized=True,eps= 1e-06)
+            loss += criterion(fake_no_filter.to(self.device), Variable(im/255,requires_grad=True)) * 10 * 0.5
             losses.append(loss)
         return loss, losses

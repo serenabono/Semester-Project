@@ -18,9 +18,9 @@ def simImage(img, H):
     return img
 
 
-def runSimulate(K,dx,dy,dz,q1,q2,q3,q4):
-    T = torch.tensor([dx, dy, dz],requires_grad=True)
-    angle_axis = tgm.quaternion_to_angle_axis(torch.tensor([q1,q2,q3,q4]))
+def runSimulate(K,fake):
+    T = fake[0:3]
+    angle_axis = tgm.quaternion_to_angle_axis(fake[3:])
     R_f=tgm.angle_axis_to_rotation_matrix(torch.unsqueeze(angle_axis,dim=0))
     H = torch.cat((R_f[0,0:3, 0:2], torch.unsqueeze(T,dim=1)),dim=1).type(torch.Tensor)
     H = torch.matmul(K, H)
@@ -43,17 +43,18 @@ def evaluate_images(xyz,wpqr):
     img = torch.unsqueeze(im_transform(image),dim=0)
     _,ch,row, col = img.shape
 
+    def show(img):
+        npimg = img.detach().numpy().reshape([3,224,224])
+        plt.imshow(np.transpose(npimg, (1, 2, 0)), interpolation='nearest')
+        plt.show()
+
     for i, fake in enumerate(coordinates):
         zoom = 1600
         K = torch.tensor([[zoom, 0, col / 2], [0, zoom, row / 2.5], [0, 0, 1]],requires_grad=True).type(torch.Tensor)
-        H = runSimulate(K,fake[0],fake[1],fake[2],fake[3],fake[4],fake[5],fake[6])
+        H = runSimulate(K,fake)
         image_out=simImage(img,H)
-        transform = transforms.Compose(
-            [transforms.ToPILImage(),
-             transforms.RandomHorizontalFlip(),
-             transforms.Resize((224,224)),
-             transforms.RandomCrop((224,224)),
-             transforms.ToTensor(),
-             transforms.Normalize(mean=[0.5,0.5,0.5], std=[0.5,0.5,0.5])])
-        images[i,:,:,:]=transform(image_out[0])
+        #noise=torch.repeat_interleave(torch.repeat_interleave(torch.linspace(0,1,steps=image_out.shape[3]),3),image_out.shape[2]).reshape(image_out.shape[1],image_out.shape[2],image_out.shape[3])
+        #image_out=image_out*torch.unsqueeze(noise,dim=0)
+        #show(image_out)
+        images[i,:,:,:]=image_out[0]
     return images
