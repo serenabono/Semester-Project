@@ -1,7 +1,8 @@
 import os
 import time
-import pandas as pd
 import torch.utils.data as data
+import torch.version
+
 from utils.common.config_parser import AbsPoseConfig
 from utils.common.setup import *
 from utils.datasets.preprocess import *
@@ -96,10 +97,11 @@ def train(net, config, log, train_loader, ss_data_loader, val_loader=None):
         visman, tloss_meter, pos_acc_meter, rot_acc_meter = OptimSearchVisTmp.get_meters(config)
         homo_meters = None
     start_time = time.time()
-    print('Start training from {config.start_epoch} to {config.epochs}.'.format(config=config))
+    lprint('Start training from {config.start_epoch} to {config.epochs}.'.format(config=config))
+    #lprint("cuda Version: {}", torch.cuda.current_device())
     for epoch in range(config.start_epoch, config.epochs):
         net.train() # Switch to training mode
-        loss = net.train_epoch(train_loader,ss_data_loader, epoch)
+        loss = net.train_epoch(train_loader,ss_data_loader, epoch,log)
         lprint('Epoch {}, loss:{}'.format(epoch+1, loss), log)
         # Update homo variable meters
         if config.learn_weighting and homo_meters is not None:
@@ -178,9 +180,11 @@ def main():
 
     #os.environ["CUDA_VISIBLE_DEVICES"]=""
     # Setup
+
     config = AbsPoseConfig().parse()
     setup_config(config)
     log = open(config.log, 'a')
+    lprint("Cuda Version: {}".format(torch.version.cuda),log)
     lprint(config_to_string(config), log)
 
     # Datasets configuration

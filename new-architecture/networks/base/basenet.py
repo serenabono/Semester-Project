@@ -1,7 +1,10 @@
 import torch
 import torch.nn as nn
+from networks.utils import cuda
 from collections import OrderedDict
 import itertools
+from torch.cuda.amp import GradScaler, autocast
+from utils.common.setup import lprint
 
 
 class BaseNet(nn.Module):
@@ -60,7 +63,7 @@ class BaseNet(nn.Module):
         elif config.optim == 'SGD':
             self.optimizer = torch.optim.SGD(self.parameters(), lr=config.lr_init, momentum=config.momentum, weight_decay=config.weight_decay, nesterov=False)
 
-        self.g_optimizer = torch.optim.Adam(self.parameters(), lr=.0002, betas=(0.5, 0.999))
+        #self.g_optimizer = torch.optim.Adam(self.parameters(), lr=.0002, betas=(0.5, 0.999))
 
     # Initialize optimizer from a state if available
         if config.optimizer_dict and config.training:
@@ -75,7 +78,8 @@ class BaseNet(nn.Module):
             def step(self, epoch):
                 return 1.0 - max(0, epoch + self.offset - self.decay_epoch) / (self.epochs - self.decay_epoch)
 
-        self.g_lr_scheduler = torch.optim.lr_scheduler.LambdaLR(self.g_optimizer, lr_lambda=LambdaLR(1000, 0, 100).step)
+        self.lr_scheduler = torch.optim.lr_scheduler.LambdaLR(self.optimizer, lr_lambda=LambdaLR(1000, 0, 100).step)
+        self.scaler=GradScaler()
 
         if config.lr_decay:
             self.lr_scheduler = torch.optim.lr_scheduler.StepLR(self.optimizer, step_size=config.lr_decay_step, gamma=config.lr_decay_factor, last_epoch=config.start_epoch-1)
@@ -93,22 +97,36 @@ class BaseNet(nn.Module):
         self.g_lr_scheduler.step()
         return loss, losses
 
-    def optim_step_(self, batch):
+    def optim_step_(self, batch,log,ss=False):
         self.optimizer.zero_grad()
-        loss, losses = self.ss_loss_(batch)
-        loss.backward()
-        self.optimizer.step()
+        if(ss==False):
+            loss, losses = self.loss_(batch)
+            #lprint("loss_1: {}".format(loss),log)
+        else:
+            loss, losses = self.ss_loss_(batch, log)
+            #lprint("loss_2: {}".format(loss),log)
+        self.scaler.scale(loss).backward()
+        self.scaler.unscale_(self.optimizer)
+        #torch.nn.utils.clip_grad_norm_(self.parameters(), max_norm)
+        self.scaler.step(self.optimizer)
+        self.scaler.update()
+        """loss.backward()
+        self.optimizer.step()"""
         return loss, losses
 
-    def train_epoch(self, data_loader,ss_data_loader, epoch):
+    def train_epoch(self, data_loader, ss_data_loader,epoch,log):
+        if self.lr_scheduler:
+            self.lr_scheduler.step()
         for i, batch in enumerate(data_loader):
-            loss, losses = self.optim_step_(batch)
+            loss, losses = self.optim_step_(batch,log,ss=False)
         if(epoch%5==0):
+            if self.lr_scheduler:
+                self.lr_scheduler.step()
             for i, batch in enumerate(ss_data_loader):
-                loss_ss, losses_ss = self.optim_step_g_(batch)
+                loss_ss, losses_ss = self.optim_step_(batch,log,ss=True)
             return loss, losses, loss_ss,losses_ss
-        return loss, losses
-
+        return  loss, losses
+    
     def save_weights_(self, sav_path):
         torch.save(self.state_dict(), sav_path)
 
@@ -155,3 +173,6 @@ class BaseNet(nn.Module):
     def learned_weighting_loss(self, loss_pos, loss_rot, sx, sq):
         '''The weighted loss function that learns variables sx and sy to balance the positional loss and the rotational loss'''
         return (-1 * sx).exp() * loss_pos + sx + (-1 * sq).exp() * loss_rot + sq
+
+    def learned_weighting_loss_ss(self,loss):
+        return loss

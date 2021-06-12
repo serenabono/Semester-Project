@@ -5,12 +5,13 @@ from networks.base.basenet import BaseNet
 from networks.base.resnet import resnet34
 from networks.base.evaluate import evaluate_images
 import kornia as K
+from torch.utils.data import Dataset, DataLoader
 import matplotlib.pyplot as plt
 import numpy as np
 from torchgeometry.losses import ssim
 from torchvision import transforms, datasets
-from torch.autograd import Variable
-
+from utils.common.setup import lprint
+from .utils import cuda
 
 class Regression(nn.Module):
     """Pose regression module.
@@ -137,43 +138,74 @@ class PoseNet_resnet(BaseNet):
             loss += w * loss_func(loss_xyz, loss_wpqr)
         return loss, losses
 
-    def ss_loss_(self, batch):
+    def ss_loss_(self, batch, log):
         def show(img):
             npimg = img.detach().numpy().reshape([3,224,224])
             plt.imshow(np.transpose(npimg, (1, 2, 0)), interpolation='nearest')
             plt.show()
 
-        class MyDataset():
-            def __init__(self, data):
-                super(MyDataset, self).__init__()
+        class MyDataset(Dataset):
+            def __init__(self, data, transform):
 
                 self.data = data
 
                 # define your transform pipline
-                self.transform = transforms.Compose(
-                    [transforms.ToPILImage(),
-                     transforms.RandomHorizontalFlip(),
-                     transforms.Resize((224,224)),
-                     transforms.RandomCrop((224,224)),
-                     transforms.ToTensor(),
-                     transforms.Normalize(mean=[0.5,0.5,0.5], std=[0.5,0.5,0.5])])
+                self.transform = transform
 
             def __getitem__(self, index):
                 x = self.data[index]
                 return self.transform(x)
 
+            def __len__(self):
+                return self.data.shape[0]
+
+        transform = transforms.Compose(
+            [transforms.ToPILImage(),
+             transforms.RandomHorizontalFlip(),
+             transforms.Resize((224,224)),
+             transforms.RandomCrop((224,224)),
+             transforms.ToTensor(),
+             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
+
         im = self.get_inputs_(batch, with_label=False)
-        im_no_filter=MyDataset(im)
-        #im=K.filters.sobel(im_no_filter.data,normalized=True,eps= 1e-06)/255
-        pred = self.forward(im_no_filter.data)
-        criterion=nn.L1Loss()
-        loss = 0
-        losses = []
-        loss_weighting = [0.3, 0.3, 1.0]
-        for l, w in enumerate(loss_weighting):
-            xyz, wpqr = pred[l]
-            fake_no_filter=evaluate_images(xyz, wpqr)
-            #fake=K.filters.sobel(fake_no_filter,normalized=True,eps= 1e-06)
-            loss += criterion(fake_no_filter.to(self.device), Variable(im/255,requires_grad=True)) * 10 * 0.5
-            losses.append(loss)
+        im_dataset=MyDataset(im,transform=transform)
+        im_dataset_loader = torch.utils.data.DataLoader(im_dataset, batch_size=im_dataset.__len__())
+        criterion=nn.MSELoss(reduction="mean")
+
+        for real_im in im_dataset_loader:
+            real_im=real_im.to(self.device)
+            pred = self.forward(real_im)
+            losses = []
+            loss_weighting = [0.3, 0.3, 1.0]
+            loss_func = lambda loss_xyz : self.learned_weighting_loss_ss(loss_xyz)
+            loss=0
+            normalize=transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+            for l, w in enumerate(loss_weighting):
+                xyz, wpqr = pred[l]
+                fake=evaluate_images(xyz, wpqr)
+                fake_dataset=MyDataset(fake,transform=normalize)
+                fake_dataset_loader = torch.utils.data.DataLoader(fake_dataset, batch_size=fake_dataset.__len__())
+
+                for fake in fake_dataset_loader:
+                    fake=fake.to(self.device)
+                    loss_f = criterion(fake,real_im)*10*0.5
+                    """
+                    while True:
+                        loss_f = criterion(fake,real_im)*10*0.5
+                        if(loss_f==loss_f):
+                            break
+                        fake=torch.round(fake)
+                        real_im=torch.round(real_im)"""
+                    loss+=w*loss_func(loss_f)
+                    losses.append(loss)
+
+        #fake1,fake2,fake3=cuda(fake)
+        """
+        loss_f1 = criterion(fake1,real_im) * 10 * 0.5
+        loss_f2 = criterion(fake2,real_im) * 10 * 0.5
+        loss_f3 = criterion(fake3,real_im) * 10 * 0.5
+        lprint("loss_f1: {}, loss_f2: {}, loss_f3: {}".format(loss_f1,loss_f2, loss_f3),log)
+        loss=loss_weighting[0]*torch.mean(loss_func(loss_f1))+loss_weighting[1]*torch.mean(loss_func(loss_f2))+loss_weighting[2]*torch.mean(loss_func(loss_f3))
+        lprint("loss: {}, fake: {}, real: {}".format(loss, [fake1[0,:,1:3,1:3],fake2[0,:,1:3,1:3],fake3[0,:,1:3,1:3]], real_im[0,:,1:3,1:3]),log)
+        losses.append(loss)"""
         return loss, losses

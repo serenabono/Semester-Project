@@ -29,6 +29,7 @@ def runSimulate(K,fake):
 
 
 def evaluate_images(xyz,wpqr):
+    device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
     coordinates=torch.cat((xyz,wpqr), dim=1)
     images=torch.zeros([len(coordinates),3,224,224])
     im_path = '/itet-stor/sebono/net_scratch/datasets/fieldboundary/images/robocup_thicker.jpeg'
@@ -56,5 +57,5 @@ def evaluate_images(xyz,wpqr):
         #noise=torch.repeat_interleave(torch.repeat_interleave(torch.linspace(0,1,steps=image_out.shape[3]),3),image_out.shape[2]).reshape(image_out.shape[1],image_out.shape[2],image_out.shape[3])
         #image_out=image_out*torch.unsqueeze(noise,dim=0)
         #show(image_out)
-        images[i,:,:,:]=image_out[0]
+        images[i,:,:,:]=image_out[0]*255
     return images
