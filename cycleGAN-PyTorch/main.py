@@ -6,6 +6,12 @@ from utils import create_link
 
 
 
+ #self.Gab = define_Gen(input_nc=3, output_nc=3, ngf=args.ngf, netG=args.gen_net, norm=args.norm, 
+                                                    use_dropout= not args.no_dropout, gpu_ids=args.gpu_ids)
+ #self.Gba = define_Gen(input_nc=3, output_nc=3, ngf=args.ngf, netG=args.gen_net, norm=args.norm, 
+                                                    use_dropout= not args.no_dropout, gpu_ids=args.gpu_ids)
+ #self.Da = define_Dis(input_nc=3, ndf=args.ndf, netD= args.dis_net, n_layers_D=3, norm=args.norm, gpu_ids=args.gpu_ids)
+ #self.Db = define_Dis(input_nc=3, ndf=args.ndf, netD= args.dis_net, n_layers_D=3, norm=args.norm, gpu_ids=args.gpu_ids)
 # To get arguments from commandline
 def get_args():
     parser = ArgumentParser(description='cycleGAN PyTorch')
