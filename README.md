@@ -82,8 +82,6 @@ their accuracy both on the real images and Cycle-GAN translated images.
 
 # Citations
 
-> -- <cite>[PoseNet: A Convolutional Network for Real-Time 6-dof Camera Relocalization][1]</cite>
-
 > -- <cite>[cycleGAN-PyTorch][2]</cite>
 https://github.com/arnab39/cycleGAN-PyTorch
 
