@@ -78,3 +78,31 @@ this project I would probably spend some time in searching more effective loss f
 their accuracy both on the real images and Cycle-GAN translated images.
 
 ## Results can be seen the the paper pdf
+
+
+#Citations
+
+@article{PoseEstimation,
+ title={PoseNet: A Convolutional Network for Real-Time 6-dof Camera Relocalization},
+ author={Alex Kendall Matthew Grimes, Roberto Cipolla},
+ journal={arXiv},
+ year={2015}
+}
+
+@misc{Repo-GAN,
+  author = {arnab39},
+  title = {cycleGAN-PyTorch},
+  year = {2018},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/arnab39/cycleGAN-PyTorch}},
+}
+
+@misc{visloc-apr,
+  author = {GrumpyZhou},
+  title = {visloc-apr},
+  year = {2019},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/GrumpyZhou/visloc-apr}},
+}
