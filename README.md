@@ -80,7 +80,7 @@ their accuracy both on the real images and Cycle-GAN translated images.
 ## Results can be seen the the paper pdf
 
 
-# Citations
+## Citations
 
 > -- <cite>[cycleGAN-PyTorch][2]</cite>
 https://github.com/arnab39/cycleGAN-PyTorch
