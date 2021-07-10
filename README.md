@@ -68,7 +68,7 @@ preprocessed using difierentiable tools such as filters. Few of the different co
 and made them more uniform, while the Sobel filter underlined the contour of the figures and
 therefore the lines of the field.
 
-# Conclusions
+## Conclusions
 
 The self-supervised module was successful in predicting from real images regardless of their intrinsic
 variability. The results show how the focal length and the height varies within the predictions. The
